@@ -7,8 +7,8 @@ exports.createArtist = async (req, res) => {
 
   try {
     await db.query(`INSERT INTO Artist (name, genre) VALUES (?, ?)`, [
-      req.body.name,
-      req.body.genre,
+      name,
+      genre,
     ]);
 
     res.sendStatus(201).json(req.body);
