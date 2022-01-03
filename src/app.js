@@ -1,7 +1,5 @@
 const express = require('express');
-const request = require('express');
 const routerArtist = require('./routes/artist');
-
 const app = express();
 
 app.use(express.json());
