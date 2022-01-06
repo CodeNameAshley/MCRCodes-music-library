@@ -12,10 +12,13 @@ exports.createArtist = async (req, res) => {
       genre,
     ]);
 
-    res.sendStatus(201).json(req.body);
+    res.status(201); //.json(req.body);
+    res.send(
+      `Artist "${req.body.name}" has been added to the database under the genre of "${req.body.genre}"`
+    );
   } catch (err) {
-    res.sendStatus(500).json(err);
-    res.send('Wrong format');
+    res.status(500).json(err);
+    res.send('Entry must be a string in JSON format');
   }
 
   db.close();
