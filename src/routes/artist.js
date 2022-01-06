@@ -5,6 +5,6 @@ const artistController = require('../controllers/artist');
 router.post('/', artistController.createArtist);
 router.get('/', artistController.readArtist);
 router.get('/:artistId', artistController.singleArtist);
-router;
+router.patch('/:artistId', artistController.updateDetails);
 
 module.exports = router;
