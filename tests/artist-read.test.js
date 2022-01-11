@@ -39,6 +39,7 @@ describe('read artist', () => {
         const res = await request(app).get('/artist').send();
 
         expect(res.status).to.equal(201);
+        //console.log(res.body);
         expect(res.body.length).to.equal(3);
 
         res.body.forEach((artistRecord) => {

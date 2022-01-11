@@ -21,15 +21,16 @@ exports.readGenre = async (req, res) => {
   const { genreType } = req.params;
   //const [artists] = await db.query('SELECT * FROM Artist');
 
-  const [artist] = await db.query('SELECT * FROM Artist WHERE genre = ?', [
-    genreType,
-  ]);
+  const [artistsByGenre] = await db.query(
+    'SELECT * FROM Artist WHERE genre = ?',
+    [genreType]
+  );
   try {
-    if (!artist) {
+    if (!artistsByGenre) {
       res.status(404);
       res.send(` ${genreType} does not exist!.`);
     } else {
-      res.status(200).json({ artist });
+      res.status(200).json({ artistsByGenre });
     }
   } catch (err) {
     res.status(500).json(err);

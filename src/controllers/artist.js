@@ -46,11 +46,12 @@ exports.singleArtist = async (req, res) => {
   const [[artistById]] = await db.query('SELECT * FROM Artist WHERE id = ?', [
     artistId,
   ]);
+
   try {
     if (!artistById) {
       res.status(404);
       res.send(
-        ` Artist ID no: ${artistId} does not exist! Please choose between 1 - ${artists.length}.`
+        ` Artist ID no: ${artistId} does not exist 😔! Please choose between 1 - ${artists.length}.`
       );
     } else {
       res.status(200).json(artistById);
@@ -94,7 +95,7 @@ exports.updateDetails = async (req, res) => {
   let updatedGenre;
 
   if (req.body.name && req.body.genre) {
-    updatedName = `The artist name has been updated to '${req.body.name}'.`;
+    updatedName = `The artist name has been updated to '${req.body.name}' 🎤.`;
     updatedGenre = `The genre has been updated to '${req.body.genre}'`;
   } else if (!req.body.name) {
     updatedName = `The artist name has not changed.`;
@@ -113,13 +114,13 @@ exports.updateDetails = async (req, res) => {
     );
 
     if (!updatedrow) {
-      res.status(201);
+      res.status(200);
       res.send(
         `Artist no:${artistId} has been updated! ${updatedName} ${updatedGenre}.`
       );
     } else {
       res.status(404);
-      res.send('The update failed');
+      //es.send('The update failed');
     }
   } catch (err) {
     res.sendStatus(500);
