@@ -1,5 +1,5 @@
 const { query } = require('express');
-const { redirect } = require('express/lib/response');
+const { redirect, get } = require('express/lib/response');
 const getDb = require('../services/db');
 
 exports.createArtist = async (req, res) => {
@@ -28,7 +28,7 @@ exports.readArtist = async (req, res) => {
   const db = await getDb();
 
   try {
-    const [artists] = await db.query('SELECT * FROM Artist');
+    const [[artists]] = await db.query('SELECT * FROM Artist');
     res.status(201).json({ artists });
   } catch (err) {
     res.status(500).json(err);
@@ -41,7 +41,7 @@ exports.singleArtist = async (req, res) => {
   const db = await getDb();
 
   const { artistId } = req.params;
-  const [artists] = await db.query('SELECT * FROM Artist');
+  const [[artists]] = await db.query('SELECT * FROM Artist');
 
   const [[artistById]] = await db.query('SELECT * FROM Artist WHERE id = ?', [
     artistId,
@@ -62,29 +62,6 @@ exports.singleArtist = async (req, res) => {
 
   db.close();
 };
-
-// exports.artistName = async (req, res) => {
-//   const db = await getDb();
-
-//   const { artistName } = req.params;
-//   const [[artistByName]] = await db.query(
-//     'SELECT * FROM Artist WHERE name = ?',
-//     [artistName]
-//   );
-
-//   try {
-//     if (!artistByName) {
-//       res.status(404);
-//       res.send(` Artist ID no: ${artistName} does not exist!`);
-//     } else {
-//       res.status(200).json(artistByName);
-//     }
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-
-//   db.close();
-// };
 
 exports.updateDetails = async (req, res) => {
   const db = await getDb();
@@ -108,12 +85,13 @@ exports.updateDetails = async (req, res) => {
   //const [artists] = await db.query('SELECT * FROM Artist');
 
   try {
-    const [{ updatedrow }] = await db.query(
-      'UPDATE Artist SET ? WHERE id = ?',
-      [details, artistId]
+    const [[existingArtist]] = await db.query(
+      'SELECT * FROM Artist WHERE id = ?',
+      [artistId]
     );
 
-    if (!updatedrow) {
+    if (existingArtist) {
+      await db.query('UPDATE Artist SET ? WHERE id = ?', [details, artistId]);
       res.status(200);
       res.send(
         `Artist no:${artistId} has been updated! ${updatedName} ${updatedGenre}.`
@@ -123,7 +101,31 @@ exports.updateDetails = async (req, res) => {
       //es.send('The update failed');
     }
   } catch (err) {
-    res.sendStatus(500);
+    res.status(500);
+  }
+
+  db.close();
+};
+
+exports.deleteArtist = async (req, res) => {
+  const db = await getDb();
+  const artistIdent = req.params.artistIdent;
+
+  try {
+    const [[artist]] = await db.query('SELECT * FROM Artist WHERE id = ?', [
+      artistIdent,
+    ]);
+    if (!artist) {
+      res.status(404);
+      res.send(`${artistIdent} is not in the database.`);
+    } else {
+      await db.query('DELETE FROM Artist WHERE id = ?', [artistIdent]);
+      res.status(200);
+      res.send(`${artistIdent} has been deleted!`);
+      // res.send(`Artist no:${artistId} has been deleted! Bye!`);
+    }
+  } catch (err) {
+    res.status(500).json(err);
   }
 
   db.close();

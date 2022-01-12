@@ -6,7 +6,7 @@ exports.allGenre = async (req, res) => {
   const db = await getDb();
 
   try {
-    const [typesOfGenres] = await db.query('SELECT genre FROM Artist');
+    const [typesOfGenres] = await db.query('SELECT DISTINCT genre FROM Artist');
     res.status(201).json({ typesOfGenres });
   } catch (err) {
     res.status(500).json(err);
