@@ -15,7 +15,7 @@ exports.allGenre = async (req, res) => {
   db.close();
 };
 
-exports.readGenre = async (req, res) => {
+exports.singleGenre = async (req, res) => {
   const db = await getDb();
 
   const { genreType } = req.params;
