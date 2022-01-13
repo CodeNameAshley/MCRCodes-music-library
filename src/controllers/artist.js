@@ -65,6 +65,7 @@ exports.singleArtist = async (req, res) => {
 
 exports.updateDetails = async (req, res) => {
   const db = await getDb();
+  const details = req.body;
   const { artistId } = req.params;
 
   let updatedName;
