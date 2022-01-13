@@ -35,10 +35,10 @@ npm start
 
 Contributors names and contact info
 
-ex. Manchester Codes
-ex. [@ManchesterCodes](https://twitter.com/manchestercodes)
-ex. Ashley L
-ex. [@codenameashley](https://twitter.com/codenameashley)
+- ex. Manchester Codes
+- ex. [@ManchesterCodes](https://twitter.com/manchestercodes)
+- ex. Ashley L
+- ex. [@codenameashley](https://twitter.com/codenameashley)
 
 ## Version History
 
